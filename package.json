@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --delay 10 server.js"
+    "start": "nodemon --delay 3 server.js"
   },
   "author": "Nikolay Ivanov <n_13@bk.ru>",
   "license": "ISC",

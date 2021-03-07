@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const v8 = require('v8');
 
+const runGC = require.main.require('./gc.js');
+
 const PATH = `${__dirname}/sessions`;
 
 const safePath = fn => (token, ...args) => {
@@ -25,6 +27,12 @@ const writeSession = safePath(fs.writeFile);
 const deleteSession = safePath(fs.unlink);
 
 class Storage extends Map {
+    constructor() {
+        super();
+
+        this.runGC();
+    }
+
     get(key, callback) {
         const value = super.get(key);
         if (value) {
@@ -36,7 +44,7 @@ class Storage extends Map {
                 callback(err);
                 return;
             }
-            console.log(`Session loaded: ${key}`);
+            //console.log(`Session loaded: ${key}`);
             const session = v8.deserialize(data);
             super.set(key, session);
             callback(null, session);
@@ -48,16 +56,19 @@ class Storage extends Map {
         if (value) {
             const data = v8.serialize(value);
             writeSession(key, data, () => {
-                console.log(`Session saved: ${key}`);
+                //console.log(`Session saved: ${key}`);
             });
         }
     }
 
     delete(key) {
-        //console.log('Delete: ', key);
         deleteSession(key, () => {
-            console.log(`Session deleted: ${key}`);
+            //console.log(`Session deleted: ${key}`);
         });
+    }
+
+    runGC() {
+        runGC(path.resolve(PATH));
     }
 }
 

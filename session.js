@@ -46,6 +46,7 @@ class Session extends Map {
                     if (err) reject(new Error('No session'));
                     Object.setPrototypeOf(session, Session.prototype);
                     client.token = sessionToken;
+                    session.token = sessionToken;
                     client.session = session;
                     resolve(session);
                 });
@@ -64,6 +65,7 @@ class Session extends Map {
     }
 
     save() {
+        //console.log('session save: ', this.token);
         storage.save(this.token);
     }
 }

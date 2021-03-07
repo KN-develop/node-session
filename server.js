@@ -17,7 +17,6 @@ const types = {
 http.createServer(async (req, res) => {
     const client = await Client.getInstance(req, res);
     const { method, url, headers } = req;
-    //console.log(`${method} ${url} ${headers.cookie}`);
     const handler = routing[url];
     res.on('finish', () => {
         if (client.session) client.session.save();

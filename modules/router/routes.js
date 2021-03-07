@@ -1,4 +1,4 @@
-const Session = require(`../../session.js`);
+const Session = require.main.require(`./session.js`);
 
 const routes = {
     '/': async () => '<h1>welcome to homepage</h1><hr>',
